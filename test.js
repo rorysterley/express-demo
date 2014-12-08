@@ -48,7 +48,7 @@ describe('Listing cities on /cities', function() {
   });
 });
 
-describe('Createing new cities', function() {
+describe('Creating new cities', function() {
 
   it('Returns a 201 status code', function(done) {
     request(app)
@@ -62,6 +62,13 @@ describe('Createing new cities', function() {
       .post('/cities')
       .send('name=Springfield&description=where+the+simpsons+live')
       .expect(/springfield/i, done);
+  });
+
+  it('Validates city name and description', function(done) {
+    request(app)
+      .post('/cities')
+      .send('name=&description=')
+      .expect(400, done);
   });
 });
 
