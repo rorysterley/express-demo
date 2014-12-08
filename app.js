@@ -12,7 +12,7 @@ var redis = require('redis');
 if (process.env.REDISTOGO_URL) {
   var rtg = require("url").parse(process.env.REDISTOGO_URL);
   var client = redis.createClient(rtg.port, rtg.hostname);
-  
+
   client.auth(rtg.auth.split(":")[1]);
 } else {
   var client = redis.createClient();
@@ -34,6 +34,13 @@ app.post('/cities', urlencode, function(request, response) {
   client.hset('cities', newCity.name, newCity.description, function(error) {
     if(error) throw error;
     response.status(201).json(newCity.name);
+  });
+});
+
+app.delete('/cities/:name', function(request, response) {
+  client.hdel('cities', request.params.name, function(error) {
+    if(error) throw error;
+    response.sendStatus(204);
   });
 });
 
