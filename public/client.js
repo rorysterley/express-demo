@@ -10,6 +10,8 @@ $(function(){
 
     $('.alert').hide();
 
+    // .error:   expecting 400 status code
+    // .success: expecting 200 status code
     $.ajax({
       type: 'POST', url: '/cities', data: cityData
     })
