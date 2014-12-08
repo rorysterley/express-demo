@@ -16,12 +16,11 @@ if (process.env.REDISTOGO_URL) {
   client.redis.auth(rtg.auth.split(":")[1]);
 } else {
   var client = redis.createClient();
+  // Status: production, development, test
+  // Length:    10           11         4
+  client.select((process.env.NODE_ENV || 'development').length);
 }
 // End Redis connection
-
-// Status: production, development, test
-// Length:    10           11         4
-client.select((process.env.NODE_ENV || 'development').length);
 
 app.get('/cities', function(request, response) {
   client.hkeys('cities', function(error, names) {
